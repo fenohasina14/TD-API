@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: Customer and Meal API with Partial Updates
+  version: 1.0.0
+  description: API pour gérer les ressources Customer et Meal, avec prise en charge des mises à jour partielles.
+paths:
+  /customers:
+    put:
+      summary: Modifier intégralement un client
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du client à modifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '200':
+          description: Client modifié avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+    patch:
+      summary: Modifier partiellement un client
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du client à modifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerPatch'
+      responses:
+        '200':
+          description: Client modifié partiellement avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+  /meals:
+    put:
+      summary: Modifier intégralement un plat
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du plat à modifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealInput'
+      responses:
+        '200':
+          description: Plat modifié avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meal'
+
+    patch:
+      summary: Modifier partiellement un plat
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du plat à modifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealPatch'
+      responses:
+        '200':
+          description: Plat modifié partiellement avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meal'
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant unique du client
+        name:
+          type: string
+          description: Nom du client
+        age:
+          type: integer
+          description: Âge du client
+
+    CustomerInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nom du client
+        age:
+          type: integer
+          description: Âge du client
+
+    CustomerPatch:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+
+    Meal:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant unique du plat
+        name:
+          type: string
+          description: Nom du plat
+        price:
+          type: number
+          format: decimal
+          description: Prix du plat
+
+    MealInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nom du plat
+        price:
+          type: number
+          format: decimal
+          description: Prix du plat
+
+    MealPatch:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+          format: decimal

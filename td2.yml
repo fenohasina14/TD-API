@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: Customer API
+  version: 1.0.0
+  description: API pour gérer les ressources Customer.
+paths:
+  /customers:
+    get:
+      summary: Obtenir une liste de clients
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: true
+          description: Numéro de la page à récupérer.
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+          required: true
+          description: Nombre de clients par page.
+      responses:
+        '200':
+          description: Liste des clients récupérés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+    post:
+      summary: Créer de nouveaux clients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '201':
+          description: Clients créés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+    put:
+      summary: Modifier un client existant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du client à modifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '200':
+          description: Client modifié avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+    delete:
+      summary: Supprimer des clients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                description: Identifiant unique du client à supprimer.
+      responses:
+        '200':
+          description: Clients supprimés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant unique du client
+        name:
+          type: string
+          description: Nom du client
+        age:
+          type: integer
+          description: Âge du client
+
+    CustomerInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nom du client
+        age:
+          type: integer
+          description: Âge du client

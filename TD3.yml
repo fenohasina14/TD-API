@@ -1,0 +1,122 @@
+openapi: 3.0.0
+info:
+  title: Meal API
+  version: 1.0.0
+  description: API pour gérer les ressources Meal.
+paths:
+  /meals:
+    get:
+      summary: Obtenir une liste de plats
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: true
+          description: Numéro de la page à récupérer.
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+          required: true
+          description: Nombre de plats par page.
+      responses:
+        '200':
+          description: Liste des plats récupérés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+
+    post:
+      summary: Créer de nouveaux plats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MealInput'
+      responses:
+        '201':
+          description: Plats créés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+
+    put:
+      summary: Modifier un plat existant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du plat à modifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealInput'
+      responses:
+        '200':
+          description: Plat modifié avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meal'
+
+    delete:
+      summary: Supprimer des plats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                description: Identifiant unique du plat à supprimer.
+      responses:
+        '200':
+          description: Plats supprimés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+
+components:
+  schemas:
+    Meal:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant unique du plat
+        name:
+          type: string
+          description: Nom du plat
+        price:
+          type: number
+          format: decimal
+          description: Prix du plat
+
+    MealInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nom du plat
+        price:
+          type: number
+          format: decimal
+          description: Prix du plat

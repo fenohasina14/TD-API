@@ -1,0 +1,381 @@
+openapi: 3.0.0
+info:
+  title: Customer and Meal API with Orders
+  version: 1.0.0
+  description: API pour gérer les ressources Customer, Meal et Order, avec des commandes associées.
+paths:
+  /customers:
+    get:
+      summary: Obtenir une liste de clients
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: true
+          description: Numéro de la page à récupérer.
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+          required: true
+          description: Nombre de clients par page.
+      responses:
+        '200':
+          description: Liste des clients récupérés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+    post:
+      summary: Créer de nouveaux clients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '201':
+          description: Clients créés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+    put:
+      summary: Modifier un client existant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du client à modifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '200':
+          description: Client modifié avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+    patch:
+      summary: Modifier partiellement un client
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du client à modifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerPatch'
+      responses:
+        '200':
+          description: Client modifié partiellement avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+    delete:
+      summary: Supprimer des clients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                description: Identifiant unique du client à supprimer.
+      responses:
+        '200':
+          description: Clients supprimés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+  /meals:
+    get:
+      summary: Obtenir une liste de plats
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: true
+          description: Numéro de la page à récupérer.
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+          required: true
+          description: Nombre de plats par page.
+      responses:
+        '200':
+          description: Liste des plats récupérés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+
+    post:
+      summary: Créer de nouveaux plats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MealInput'
+      responses:
+        '201':
+          description: Plats créés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+
+    put:
+      summary: Modifier un plat existant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du plat à modifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealInput'
+      responses:
+        '200':
+          description: Plat modifié avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meal'
+
+    delete:
+      summary: Supprimer des plats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                description: Identifiant unique du plat à supprimer.
+      responses:
+        '200':
+          description: Plats supprimés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+
+  /customers/{customerId}/orders:
+    get:
+      summary: Obtenir une liste de commandes pour un client
+      parameters:
+        - in: path
+          name: customerId
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du client pour lequel obtenir les commandes.
+      responses:
+        '200':
+          description: Liste des commandes récupérées avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+    post:
+      summary: Créer une nouvelle commande pour un client
+      parameters:
+        - in: path
+          name: customerId
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du client pour lequel créer la commande.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '201':
+          description: Commande créée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+    put:
+      summary: Modifier une commande pour un client
+      parameters:
+        - in: path
+          name: customerId
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique du client pour lequel modifier la commande.
+        - in: query
+          name: orderId
+          schema:
+            type: string
+          required: true
+          description: Identifiant unique de la commande à modifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '200':
+          description: Commande modifiée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant unique du client
+        name:
+          type: string
+          description: Nom du client
+        age:
+          type: integer
+          description: Âge du client
+
+    CustomerInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nom du client
+        age:
+          type: integer
+          description: Âge du client
+
+    CustomerPatch:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+
+    Meal:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant unique du plat
+        name:
+          type: string
+          description: Nom du plat
+        price:
+          type: number
+          format: decimal
+          description: Prix du plat
+
+    MealInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nom du plat
+        price:
+          type: number
+          format: decimal
+          description: Prix du plat
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant unique de la commande
+        reference:
+          type: string
+          description: Numéro de commande unique
+        meals:
+          type: array
+          items:
+            type: object
+            properties:
+              mealId:
+                type: string
+                description: Identifiant unique du plat
+              quantity:
+                type: integer
+                description: Quantité du plat commandée
+        orderDatetime:
+          type: string
+          format: date-time
+          description: Date et heure de la commande
+
+    OrderInput:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Numéro de commande unique
+        meals:
+          type: array
+          items:
+            type: object
+            properties:
+              mealId:
+                type: string
+                description: Identifiant unique du plat
+              quantity:
+                type: integer
+                description: Quantité du plat commandée
